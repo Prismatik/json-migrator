@@ -1,0 +1,14 @@
+{
+  "name": "migrator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha -R spec"
+  },
+  "author": "Simon Taylor <nizmox@gmail.com> (https://github.com/s-taylor)",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^2.2.4"
+  }
+}
