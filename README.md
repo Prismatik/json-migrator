@@ -11,9 +11,9 @@ The migrator takes in two inputs
 
 The migration is an object with the following properties
 
-target - which field on the document should updated by the migration
-value - what should the 'target' field be updated with
-delete - delete this field from the document (occurs after the target is updated)
+* target - which field on the document should updated by the migration
+* value - what should the 'target' field be updated with
+* delete - delete this field from the document (occurs after the target is updated)
 
 ###Example
 
@@ -26,12 +26,12 @@ var doc = {
 }
 var transform = {
   target: "fullName",
-  value: [{field: firstName}," ",{field: lastName}],
+  value: ["Mr ",{field: firstName}," ",{field: lastName}],
   delete: [firstName, lastName]
 }
 var result = migrator.migtrator(doc, transform);
 
-//result === {fullName: "Simon Taylor"}
+//result === {fullName: "Mr Simon Taylor"}
 ```
 
 ### Features to add
