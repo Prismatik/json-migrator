@@ -1,14 +1,13 @@
 var assert = require('assert');
-var migrator = require('../index.js');
+var migrator = require('../index.js').migrator;
 
 describe('migrator', function() {
-  describe('new', function() {
+  describe('adding a new field', function() {
     it("must successfully add the new field", function() {
       var doc = {
         firstName: "Simon"
       }
       var transform = {
-        type: "new",
         target: "lastName",
         value: "Taylor"
       }
@@ -16,29 +15,28 @@ describe('migrator', function() {
       assert.deepEqual(updatedDoc, { firstName: "Simon", lastName: "Taylor" });
     });
   });
-  describe('delete', function() {
+  describe('deleting a field', function() {
     it("must successfully delete the field", function() {
       var doc = {
         firstName: "Simon",
         lastName: "Taylor"
       }
       var transform = {
-        type: "delete",
-        target: "lastName"
+        delete: "lastName"
       }
       var updatedDoc = migrator(doc, transform);
       assert.deepEqual(updatedDoc, { firstName: "Simon" });
     });
   });
-  describe('move', function() {
+  describe('moving a field', function() {
     it("must successfully delete the field", function() {
       var doc = {
         firstName: "Simon",
       }
       var transform = {
-        type: "move",
-        target: "firstName",
-        destination: "myName"
+        target: "myName",
+        value: {field: "firstName"},
+        delete: "firstName"
       }
       var updatedDoc = migrator(doc, transform);
       assert.deepEqual(updatedDoc, { myName: "Simon" });
