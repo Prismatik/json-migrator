@@ -1,7 +1,7 @@
 var assert = require('assert');
-var migrator = require('../index.js').migrator;
+var migrate = require('../index.js').migrate;
 
-describe('migrator', function() {
+describe('migrate', function() {
   describe('adding a new field', function() {
     it("must successfully add the new field", function() {
       var doc = {
@@ -11,7 +11,7 @@ describe('migrator', function() {
         target: "lastName",
         value: "Taylor"
       }
-      var updatedDoc = migrator(doc, transform);
+      var updatedDoc = migrate(doc, transform);
       assert.deepEqual(updatedDoc, { firstName: "Simon", lastName: "Taylor" });
     });
   });
@@ -25,7 +25,7 @@ describe('migrator', function() {
       var transform = {
         delete: "lastName"
       }
-      var updatedDoc = migrator(doc, transform);
+      var updatedDoc = migrate(doc, transform);
       assert.deepEqual(updatedDoc, { firstName: "Simon" });
     });
     it("must successfully delete multiple fields", function() {
@@ -37,7 +37,7 @@ describe('migrator', function() {
       var transform = {
         delete: ["firstName", "lastName"]
       }
-      var updatedDoc = migrator(doc, transform);
+      var updatedDoc = migrate(doc, transform);
       assert.deepEqual(updatedDoc, { dob: new Date(1984, 6, 27) });
     });
   });
@@ -51,7 +51,7 @@ describe('migrator', function() {
         target: "myName",
         value: {field: "firstName"}
       }
-      var updatedDoc = migrator(doc, transform);
+      var updatedDoc = migrate(doc, transform);
       assert.deepEqual(updatedDoc, { firstName: "Simon", myName: "Simon" });
     });
   });
@@ -66,7 +66,7 @@ describe('migrator', function() {
         value: {field: "firstName"},
         delete: "firstName"
       }
-      var updatedDoc = migrator(doc, transform);
+      var updatedDoc = migrate(doc, transform);
       assert.deepEqual(updatedDoc, { myName: "Simon" });
     });
   });

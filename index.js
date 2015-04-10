@@ -1,5 +1,5 @@
 //perform the migration on the provided doc (returning the modified document)
-var migrator = function(doc, migration) {
+var migrate = function(doc, migration) {
   if (migration.target && migration.value) {
     doc[migration.target] = generateValue(doc, migration.value);
   }
@@ -39,5 +39,5 @@ var del = function(doc) {
 
 module.exports = {
   generateValue: generateValue,
-  migrator: migrator
+  migrate: migrate
 }
