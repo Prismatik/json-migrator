@@ -28,8 +28,21 @@ describe('migrator', function() {
       assert.deepEqual(updatedDoc, { firstName: "Simon" });
     });
   });
+  describe('copying a field', function() {
+    it("must successfully copy the field", function() {
+      var doc = {
+        firstName: "Simon",
+      }
+      var transform = {
+        target: "myName",
+        value: {field: "firstName"}
+      }
+      var updatedDoc = migrator(doc, transform);
+      assert.deepEqual(updatedDoc, { firstName: "Simon", myName: "Simon" });
+    });
+  });
   describe('moving a field', function() {
-    it("must successfully delete the field", function() {
+    it("must successfully move a field", function() {
       var doc = {
         firstName: "Simon",
       }
