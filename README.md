@@ -36,5 +36,7 @@ var result = migrator.migtrator(doc, transform);
 
 ### Features to add
 
-support for referencing nested properties using "."
-support for multiple consecutive updates by passing an array
+* support for referencing nested properties using "."
+* support for multiple consecutive updates by passing an array
+* add regex support (as per Dave)
+* add json schema validation before and after

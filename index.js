@@ -1,8 +1,10 @@
 //perform the migration on the provided doc (returning the modified document)
 var migrate = function(doc, migration) {
+  //perform document update (migration)
   if (migration.target && migration.value) {
     doc[migration.target] = generateValue(doc, migration.value);
   }
+  //delete fields if specified
   if (migration.delete) {
     if (migration.delete instanceof Array) {
       migration.delete.forEach(del(doc));
