@@ -4,7 +4,11 @@ var migrator = function(doc, migration) {
     doc[migration.target] = generateValue(doc, migration.value);
   }
   if (migration.delete) {
-    delete doc[migration.delete];
+    if (migration.delete instanceof Array) {
+      migration.delete.forEach(del(doc));
+    } else {
+      del(doc)(migration.delete);
+    }
   }
   return doc;
 }
@@ -26,6 +30,11 @@ var generateValue = function(doc, format) {
 var getValue = function(doc, chunk) {
   if (typeof chunk === "object") return doc[chunk.field];
   return chunk;
+}
+
+//return a function to delete a field from the specified doc
+var del = function(doc) {
+  return function(field) { delete doc[field]; }
 }
 
 module.exports = {

@@ -15,6 +15,7 @@ describe('migrator', function() {
       assert.deepEqual(updatedDoc, { firstName: "Simon", lastName: "Taylor" });
     });
   });
+
   describe('deleting a field', function() {
     it("must successfully delete the field", function() {
       var doc = {
@@ -27,7 +28,20 @@ describe('migrator', function() {
       var updatedDoc = migrator(doc, transform);
       assert.deepEqual(updatedDoc, { firstName: "Simon" });
     });
+    it("must successfully delete multiple fields", function() {
+      var doc = {
+        firstName: "Simon",
+        lastName: "Taylor",
+        dob: new Date(1984, 6, 27)
+      }
+      var transform = {
+        delete: ["firstName", "lastName"]
+      }
+      var updatedDoc = migrator(doc, transform);
+      assert.deepEqual(updatedDoc, { dob: new Date(1984, 6, 27) });
+    });
   });
+
   describe('copying a field', function() {
     it("must successfully copy the field", function() {
       var doc = {
@@ -41,6 +55,7 @@ describe('migrator', function() {
       assert.deepEqual(updatedDoc, { firstName: "Simon", myName: "Simon" });
     });
   });
+
   describe('moving a field', function() {
     it("must successfully move a field", function() {
       var doc = {
