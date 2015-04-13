@@ -47,9 +47,10 @@ describe('migrate', function() {
       var doc = {
         firstName: "Simon",
       }
+      var firstName = {field: "firstName"};
       var transform = {
         target: "myName",
-        value: {field: "firstName"}
+        value: firstName
       }
       var updatedDoc = migrate(doc, transform);
       assert.deepEqual(updatedDoc, { firstName: "Simon", myName: "Simon" });
@@ -61,9 +62,10 @@ describe('migrate', function() {
       var doc = {
         firstName: "Simon",
       }
+      var firstName = {field: "firstName"};
       var transform = {
+        value: firstName,
         target: "myName",
-        value: {field: "firstName"},
         delete: "firstName"
       }
       var updatedDoc = migrate(doc, transform);
@@ -74,9 +76,11 @@ describe('migrate', function() {
         firstName: "Simon",
         lastName: "Taylor"
       }
+      var firstName = {field: "firstName"};
+      var lastName = {field: "lastName"};
       var transform = {
         target: "fullName",
-        value: ["Mr ",{field: "firstName"}," ",{field: "lastName"}],
+        value: ["Mr ",firstName," ",lastName],
         delete: ["firstName", "lastName"]
       }
       var updatedDoc = migrate(doc, transform);
@@ -89,9 +93,10 @@ describe('migrate', function() {
       var doc = {
         fullName: "Mr Simon Taylor"
       }
+      var title = {field: "fullName", pattern: {regex: /\S*/g}};
       var transform = {
+        value: title,
         target: "title",
-        value: {field: "fullName", pattern: {regex: /\S*/g}},
         delete: "fullName"
       }
       var updatedDoc = migrate(doc, transform);
@@ -101,8 +106,9 @@ describe('migrate', function() {
       var doc = {
         fullName: "Mr Simon Taylor"
       }
+      var firstName = {field: "fullName", pattern: {regex: /\S*/g, position: 2}}
       var transform = {
-        value: {field: "fullName", pattern: {regex: /\S*/g, position: 2}},
+        value: firstName,
         target: "firstName",
         delete: "fullName"
       }
