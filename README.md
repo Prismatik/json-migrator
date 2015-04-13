@@ -18,18 +18,19 @@ The migration is an object with the following properties
 ###Example
 
 ```
-var migrator = require('document-migrator');
+//not yet published on NPM, assuming 'document-migrator' is the module name
+var migrate = require('document-migrator').migrate;
 
 var doc = {
   firstName: "Simon",
-  lastName: "Taylor",
+  lastName: "Taylor"
 }
 var transform = {
   target: "fullName",
-  value: ["Mr ",{field: firstName}," ",{field: lastName}],
-  delete: [firstName, lastName]
+  value: ["Mr ",{field: "firstName"}," ",{field: "lastName"}],
+  delete: ["firstName", "lastName"]
 }
-var result = migrator.migtrator(doc, transform);
+var result = migrate(doc, transform);
 
 //result === {fullName: "Mr Simon Taylor"}
 ```
