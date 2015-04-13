@@ -41,3 +41,4 @@ var result = migrate(doc, transform);
 * support for multiple consecutive updates by passing an array
 * add regex support (as per Dave)
 * add json schema validation before and after
+* add a preview function to output the changes without making any updates

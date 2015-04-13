@@ -30,7 +30,18 @@ var generateValue = function(doc, format) {
 
 //get the value from doc if a field value is requested, else return the value itself
 var getValue = function(doc, chunk) {
-  if (typeof chunk === "object") return doc[chunk.field];
+  if (typeof chunk === "object") {
+    var fieldContents = doc[chunk.field]
+    //if this is not a pattern match, return field contents
+    if (!chunk.pattern) return fieldContents;
+
+    //this is a pattern match so use regex
+    var regex = chunk.pattern.regex;
+    var match = fieldContents.match(regex);
+    //return the piece of the regex as specified (defaults to 0)
+    var position = chunk.pattern.position || 0;
+    return match[position];
+  }
   return chunk;
 }
 

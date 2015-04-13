@@ -83,4 +83,31 @@ describe('migrate', function() {
       assert.deepEqual(updatedDoc, {fullName: "Mr Simon Taylor"});
     });
   });
+
+  describe('using regular expressions', function() {
+    it("must default to first result when no position specified", function () {
+      var doc = {
+        fullName: "Mr Simon Taylor"
+      }
+      var transform = {
+        target: "title",
+        value: {field: "fullName", pattern: {regex: /\S*/g}},
+        delete: "fullName"
+      }
+      var updatedDoc = migrate(doc, transform);
+      assert.deepEqual(updatedDoc, {title: "Mr"});
+    });
+    it("must return the result based on the position specified", function () {
+      var doc = {
+        fullName: "Mr Simon Taylor"
+      }
+      var transform = {
+        value: {field: "fullName", pattern: {regex: /\S*/g, position: 2}},
+        target: "firstName",
+        delete: "fullName"
+      }
+      var updatedDoc = migrate(doc, transform);
+      assert.deepEqual(updatedDoc, {firstName: "Simon"});
+    });
+  });
 });
