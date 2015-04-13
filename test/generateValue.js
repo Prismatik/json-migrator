@@ -13,7 +13,6 @@ describe("generateValue", function() {
     var value = generateValue(doc, {field: "lastName"});
     assert.equal(value, "Vader");
   });
-
   it("must return a string when given an array of strings and fields", function() {
     var doc = {food: "Blue Milk", place: "Tatooine"}
     var format = ["Luke loves to drink ", {field: "food"}, " on ", {field: "place"}]

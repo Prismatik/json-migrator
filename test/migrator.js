@@ -69,5 +69,18 @@ describe('migrate', function() {
       var updatedDoc = migrate(doc, transform);
       assert.deepEqual(updatedDoc, { myName: "Simon" });
     });
+    it("must concatenate multiple values", function () {
+      var doc = {
+        firstName: "Simon",
+        lastName: "Taylor"
+      }
+      var transform = {
+        target: "fullName",
+        value: ["Mr ",{field: "firstName"}," ",{field: "lastName"}],
+        delete: ["firstName", "lastName"]
+      }
+      var updatedDoc = migrate(doc, transform);
+      assert.deepEqual(updatedDoc, {fullName: "Mr Simon Taylor"});
+    });
   });
 });
