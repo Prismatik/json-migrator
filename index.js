@@ -74,13 +74,16 @@ var applyRegex = function(pattern, fieldContents) {
 }
 
 var convertType = function(chunk) {
-  if (chunk.type === "integer") return parseInt(chunk.value);
-  if (chunk.type === "number") return parseFloat(chunk.value);
-  if (chunk.type === "date") return moment(chunk.value, chunk.format);
-  if (chunk.type === "boolean") return Boolean(chunk.value);
-  if (chunk.type === "null") return null;
+  if (typeof chunk.type !== "string") throw new Error("type must be a string");
+  var type = chunk.type.toLowerCase();
+  
+  if (type === "integer") return parseInt(chunk.value);
+  if (type === "number") return parseFloat(chunk.value);
+  if (type === "date") return moment(chunk.value, chunk.format);
+  if (type === "boolean") return Boolean(chunk.value);
+  if (type === "null") return null;
   //this shouldn't be necessary as type can be left blank for strings, but just in case
-  if (chunk.type === "string") return chunk.value;
+  if (type === "string") return chunk.value;
   throw new Error("invalid type " + chunk.type);
 }
 
