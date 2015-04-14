@@ -1,4 +1,5 @@
 var assert = require('assert');
+var fs = require('fs');
 var migrate = require('../index.js').migrate;
 
 describe('migrate', function() {
@@ -7,11 +8,8 @@ describe('migrate', function() {
       var doc = {
         firstName: "Simon"
       }
-      var transform = {
-        target: "lastName",
-        value: "Taylor"
-      }
-      var updatedDoc = migrate(doc, transform);
+      var migrationPath = './test/migrations/add-lastname.json';
+      var updatedDoc = migrate(doc, migrationPath);
       assert.deepEqual(updatedDoc, { firstName: "Simon", lastName: "Taylor" });
     });
   });
@@ -22,10 +20,8 @@ describe('migrate', function() {
         firstName: "Simon",
         lastName: "Taylor"
       }
-      var transform = {
-        delete: "lastName"
-      }
-      var updatedDoc = migrate(doc, transform);
+      var migrationPath = './test/migrations/delete-lastname.json';
+      var updatedDoc = migrate(doc, migrationPath);
       assert.deepEqual(updatedDoc, { firstName: "Simon" });
     });
     it("must successfully delete multiple fields", function() {
@@ -34,10 +30,8 @@ describe('migrate', function() {
         lastName: "Taylor",
         dob: new Date(1984, 6, 27)
       }
-      var transform = {
-        delete: ["firstName", "lastName"]
-      }
-      var updatedDoc = migrate(doc, transform);
+      var migrationPath = './test/migrations/delete-names.json';
+      var updatedDoc = migrate(doc, migrationPath);
       assert.deepEqual(updatedDoc, { dob: new Date(1984, 6, 27) });
     });
   });
@@ -47,12 +41,8 @@ describe('migrate', function() {
       var doc = {
         firstName: "Simon",
       }
-      var firstName = {field: "firstName"};
-      var transform = {
-        target: "myName",
-        value: firstName
-      }
-      var updatedDoc = migrate(doc, transform);
+      var migrationPath = './test/migrations/copy-firstname.json';
+      var updatedDoc = migrate(doc, migrationPath);
       assert.deepEqual(updatedDoc, { firstName: "Simon", myName: "Simon" });
     });
   });
@@ -62,13 +52,8 @@ describe('migrate', function() {
       var doc = {
         firstName: "Simon",
       }
-      var firstName = {field: "firstName"};
-      var transform = {
-        value: firstName,
-        target: "myName",
-        delete: "firstName"
-      }
-      var updatedDoc = migrate(doc, transform);
+      var migrationPath = './test/migrations/move-firstname.json';
+      var updatedDoc = migrate(doc, migrationPath);
       assert.deepEqual(updatedDoc, { myName: "Simon" });
     });
     it("must concatenate multiple values", function () {
@@ -76,14 +61,8 @@ describe('migrate', function() {
         firstName: "Simon",
         lastName: "Taylor"
       }
-      var firstName = {field: "firstName"};
-      var lastName = {field: "lastName"};
-      var transform = {
-        target: "fullName",
-        value: ["Mr ",firstName," ",lastName],
-        delete: ["firstName", "lastName"]
-      }
-      var updatedDoc = migrate(doc, transform);
+      var migrationPath = './test/migrations/name-concatenate.json';
+      var updatedDoc = migrate(doc, migrationPath);
       assert.deepEqual(updatedDoc, {fullName: "Mr Simon Taylor"});
     });
   });
@@ -93,26 +72,22 @@ describe('migrate', function() {
       var doc = {
         fullName: "Mr Simon Taylor"
       }
-      var title = {field: "fullName", pattern: {regex: /\S*/g}};
-      var transform = {
-        value: title,
-        target: "title",
-        delete: "fullName"
-      }
-      var updatedDoc = migrate(doc, transform);
+      var migrationPath = './test/migrations/regex-no-position.json';
+      var updatedDoc = migrate(doc, migrationPath);
       assert.deepEqual(updatedDoc, {title: "Mr"});
     });
     it("must return the result based on the position specified", function () {
       var doc = {
         fullName: "Mr Simon Taylor"
       }
-      var firstName = {field: "fullName", pattern: {regex: /\S*/g, position: 2}}
-      var transform = {
-        value: firstName,
-        target: "firstName",
-        delete: "fullName"
-      }
-      var updatedDoc = migrate(doc, transform);
+      //var firstName = {field: "fullName", pattern: {regex: /\S*/g, position: 2}}
+      //var transform = {
+        //value: firstName,
+        //target: "firstName",
+        //delete: "fullName"
+      //}
+      var migrationPath = './test/migrations/regex-with-position.json';
+      var updatedDoc = migrate(doc, migrationPath);
       assert.deepEqual(updatedDoc, {firstName: "Simon"});
     });
   });

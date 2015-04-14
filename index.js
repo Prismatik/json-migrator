@@ -1,5 +1,14 @@
+var fs = require('fs');
+
 //perform the migration on the provided doc (returning the modified document)
-var migrate = function(doc, migration) {
+var migrate = function(doc, migrationPath) {
+
+  //read and parse json migration document
+  var migrationDoc = fs.readFileSync(migrationPath, 'utf-8');
+  var migration = JSON.parse(migrationDoc);
+
+  if (!migration) throw new Error("migration must be a valid json document");
+
   //perform document update (migration)
   if (migration.target && migration.value) {
     doc[migration.target] = generateValue(doc, migration.value);
@@ -13,6 +22,14 @@ var migrate = function(doc, migration) {
     }
   }
   return doc;
+}
+
+var parseDoc = function(doc) {
+  try {
+    return JSON.parse(doc);
+  } catch (e) {
+    return false;
+  }
 }
 
 //generate the value needed based on the format provided
@@ -36,10 +53,11 @@ var getValue = function(doc, chunk) {
     if (!chunk.pattern) return fieldContents;
 
     //this is a pattern match so use regex
-    var regex = chunk.pattern.regex;
+    //regex must be in string format! no /.../ and backslash double escaped
+    var regex = new RegExp(chunk.pattern.regex, "g");
     var match = fieldContents.match(regex);
     //return the piece of the regex as specified (defaults to 0)
-    var position = chunk.pattern.position || 0;
+    var position = parseInt(chunk.pattern.position) || 0;
     return match[position];
   }
   return chunk;

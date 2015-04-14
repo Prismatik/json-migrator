@@ -42,3 +42,4 @@ var result = migrate(doc, transform);
 * add regex support (as per Dave)
 * add json schema validation before and after
 * add a preview function to output the changes without making any updates
+* change migrations to be in json format, how to deal with other data types??
