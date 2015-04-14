@@ -39,7 +39,6 @@ var result = migrate(doc, transform);
 
 * support for referencing nested properties using "."
 * support for multiple consecutive updates by passing an array
-* add regex support (as per Dave)
-* add json schema validation before and after
 * add a preview function to output the changes without making any updates
-* change migrations to be in json format, how to deal with other data types??
+* add support for other patterns i.e. split, maybe substring?? 
+* add safe fail for patterns
