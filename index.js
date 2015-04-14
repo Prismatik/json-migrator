@@ -73,7 +73,7 @@ var applyRegex = function(pattern, fieldContents) {
 }
 
 var convertDate = function(chunk) {
-  return moment(chunk.date, chunk.format);
+  return moment(chunk.date, chunk.format).toDate();
 }
 
 //return a function to delete a field from the specified doc

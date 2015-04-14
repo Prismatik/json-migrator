@@ -91,7 +91,7 @@ describe('migrate', function() {
       var migrationPath = './test/migrations/date-test.json';
       var updatedDoc = migrate({}, migrationPath);
       var expected = new Date(2015,4 - 1,14,15,56,5);
-      assert.equal(0, updatedDoc.date - expected);
+      assert.deepEqual(updatedDoc, {date: expected});
       assert.equal("object", typeof updatedDoc.date);
     });
     it("it must handle null", function() {
