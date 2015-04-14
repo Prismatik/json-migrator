@@ -1,4 +1,5 @@
 var fs = require('fs');
+var moment = require('moment');
 
 //perform the migration on the provided doc (returning the modified document)
 var migrate = function(doc, migrationPath) {
@@ -48,19 +49,36 @@ var generateValue = function(doc, format) {
 //get the value from doc if a field value is requested, else return the value itself
 var getValue = function(doc, chunk) {
   if (typeof chunk === "object") {
+
+    //this is not a string and so requires conversion
+    if (chunk.type) return convertType(chunk);
+
     var fieldContents = doc[chunk.field]
-    //if this is not a pattern match, return field contents
-    if (!chunk.pattern) return fieldContents;
 
     //this is a pattern match so use regex
-    //regex must be in string format! no /.../ and backslash double escaped
-    var regex = new RegExp(chunk.pattern.regex, "g");
-    var match = fieldContents.match(regex);
-    //return the piece of the regex as specified (defaults to 0)
-    var position = parseInt(chunk.pattern.position) || 0;
-    return match[position];
+    if (chunk.pattern) return applyRegex(chunk.pattern, doc[chunk.field]);
+
+    //this is just a string so return the value
+    return doc[chunk.field];
   }
   return chunk;
+}
+
+var applyRegex = function(pattern, fieldContents) {
+  //regex must be in string format! no /.../ and backslash double escaped
+  var regex = new RegExp(pattern.regex, "g");
+  var match = fieldContents.match(regex);
+  //return the piece of the regex as specified (defaults to 0)
+  var position = parseInt(pattern.position) || 0;
+  return match[position];
+}
+
+var convertType = function(chunk) {
+  if (chunk.type === "integer") return parseInt(chunk.value);
+  if (chunk.type === "date") return moment(chunk.value, chunk.format);
+  //this shouldn't be necessary as type can be left blank for strings, but just in case
+  if (chunk.type === "string") return chunk.value;
+  throw new Error("invalid type " + chunk.type);
 }
 
 //return a function to delete a field from the specified doc

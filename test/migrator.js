@@ -80,15 +80,23 @@ describe('migrate', function() {
       var doc = {
         fullName: "Mr Simon Taylor"
       }
-      //var firstName = {field: "fullName", pattern: {regex: /\S*/g, position: 2}}
-      //var transform = {
-        //value: firstName,
-        //target: "firstName",
-        //delete: "fullName"
-      //}
       var migrationPath = './test/migrations/regex-with-position.json';
       var updatedDoc = migrate(doc, migrationPath);
       assert.deepEqual(updatedDoc, {firstName: "Simon"});
+    });
+  });
+
+  describe('non string data types', function() {
+    it("must handle integers", function() {
+      var migrationPath = './test/migrations/integer-test.json';
+      var updatedDoc = migrate({}, migrationPath);
+      assert.deepEqual(updatedDoc, {number: 2});
+    });
+    it("must handle dates using moment.js formats", function() {
+      var migrationPath = './test/migrations/date-test.json';
+      var updatedDoc = migrate({}, migrationPath);
+      var expected = new Date(2015,4 - 1,14,15,56,5);
+      assert.equal(0, updatedDoc.date - expected);
     });
   });
 });
