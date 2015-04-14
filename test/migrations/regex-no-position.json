@@ -1,0 +1,5 @@
+{
+  "value": {"field": "fullName", "pattern": {"regex": "\\S*"}},
+  "target": "title",
+  "delete": "fullName"
+}

@@ -1,0 +1,5 @@
+{
+  "target": "fullName",
+  "value": ["Mr ",{"field": "firstName"}," ",{"field": "lastName"}],
+  "delete": ["firstName", "lastName"]
+}

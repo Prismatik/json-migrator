@@ -90,13 +90,28 @@ describe('migrate', function() {
     it("must handle integers", function() {
       var migrationPath = './test/migrations/integer-test.json';
       var updatedDoc = migrate({}, migrationPath);
-      assert.deepEqual(updatedDoc, {number: 2});
+      assert.deepEqual(updatedDoc, {integer: 2});
     });
     it("must handle dates using moment.js formats", function() {
       var migrationPath = './test/migrations/date-test.json';
       var updatedDoc = migrate({}, migrationPath);
       var expected = new Date(2015,4 - 1,14,15,56,5);
       assert.equal(0, updatedDoc.date - expected);
+    });
+    it("it must handle numbers", function() {
+      var migrationPath = './test/migrations/number-test.json';
+      var updatedDoc = migrate({}, migrationPath);
+      assert.deepEqual(updatedDoc, {number: 3.1415});
+    });
+    it("it must handle booleans", function() {
+      var migrationPath = './test/migrations/boolean-test.json';
+      var updatedDoc = migrate({}, migrationPath);
+      assert.deepEqual(updatedDoc, {boolean: true});
+    });
+    it("it must handle null", function() {
+      var migrationPath = './test/migrations/null-test.json';
+      var updatedDoc = migrate({}, migrationPath);
+      assert.deepEqual(updatedDoc, {null: null});
     });
   });
 });

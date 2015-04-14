@@ -1,0 +1,8 @@
+{
+  "target": "date",
+  "value": {
+    "type": "date",
+    "format": "MMMM Do YYYY, h:mm:ss a",
+    "value": "April 14th 2015, 3:56:05 pm"
+  }
+}

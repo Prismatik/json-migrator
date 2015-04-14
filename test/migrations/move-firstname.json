@@ -1,0 +1,5 @@
+{
+  "value": {"field": "firstName"},
+  "target": "myName",
+  "delete": "firstName"
+}
