@@ -11,7 +11,7 @@ var migrate = function(doc, migrationPath) {
   if (!migration) throw new Error("migration must be a valid json document");
 
   //perform document update (migration)
-  if (migration.target && migration.value) {
+  if (migration.target && migration.hasOwnProperty("value")) {
     doc[migration.target] = generateValue(doc, migration.value);
   }
   //delete fields if specified
@@ -48,12 +48,11 @@ var generateValue = function(doc, format) {
 
 //get the value from doc if a field value is requested, else return the value itself
 var getValue = function(doc, chunk) {
+  if (chunk === null) return null;
   if (typeof chunk === "object") {
 
     //this is not a string and so requires conversion
-    if (chunk.type) return convertType(chunk);
-
-    var fieldContents = doc[chunk.field]
+    if (chunk.date && chunk.format) return convertDate(chunk);
 
     //this is a pattern match so use regex
     if (chunk.pattern) return applyRegex(chunk.pattern, doc[chunk.field]);
@@ -73,18 +72,8 @@ var applyRegex = function(pattern, fieldContents) {
   return match[position];
 }
 
-var convertType = function(chunk) {
-  if (typeof chunk.type !== "string") throw new Error("type must be a string");
-  var type = chunk.type.toLowerCase();
-  
-  if (type === "integer") return parseInt(chunk.value);
-  if (type === "number") return parseFloat(chunk.value);
-  if (type === "date") return moment(chunk.value, chunk.format);
-  if (type === "boolean") return Boolean(chunk.value);
-  if (type === "null") return null;
-  //this shouldn't be necessary as type can be left blank for strings, but just in case
-  if (type === "string") return chunk.value;
-  throw new Error("invalid type " + chunk.type);
+var convertDate = function(chunk) {
+  return moment(chunk.date, chunk.format);
 }
 
 //return a function to delete a field from the specified doc

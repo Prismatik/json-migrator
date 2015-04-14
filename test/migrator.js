@@ -87,30 +87,12 @@ describe('migrate', function() {
   });
 
   describe('non string data types', function() {
-    it("must handle integers", function() {
-      var migrationPath = './test/migrations/integer-test.json';
-      var updatedDoc = migrate({}, migrationPath);
-      assert.deepEqual(updatedDoc, {integer: 2});
-      assert.equal("number", typeof updatedDoc.integer);
-    });
     it("must handle dates using moment.js formats", function() {
       var migrationPath = './test/migrations/date-test.json';
       var updatedDoc = migrate({}, migrationPath);
       var expected = new Date(2015,4 - 1,14,15,56,5);
       assert.equal(0, updatedDoc.date - expected);
       assert.equal("object", typeof updatedDoc.date);
-    });
-    it("it must handle numbers", function() {
-      var migrationPath = './test/migrations/number-test.json';
-      var updatedDoc = migrate({}, migrationPath);
-      assert.deepEqual(updatedDoc, {number: 3.1415});
-      assert.equal("number", typeof updatedDoc.number);
-    });
-    it("it must handle booleans", function() {
-      var migrationPath = './test/migrations/boolean-test.json';
-      var updatedDoc = migrate({}, migrationPath);
-      assert.deepEqual(updatedDoc, {boolean: true});
-      assert.equal("boolean", typeof updatedDoc.boolean);
     });
     it("it must handle null", function() {
       var migrationPath = './test/migrations/null-test.json';
