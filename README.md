@@ -5,7 +5,7 @@
 The migrator takes in two inputs
 
 * doc - the document to be modified by the migration
-* migration - the migration to transform the document
+* migrationPath - the file location of the migration (a JSON file)
 
 ###Migration format
 
