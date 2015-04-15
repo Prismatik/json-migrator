@@ -39,6 +39,5 @@ var result = migrate(doc, transform);
 
 * support for referencing nested properties using "."
 * support for multiple consecutive updates by passing an array
-* add a preview function to output the changes without making any updates
 * add support for other patterns i.e. split, maybe substring?? 
-* add safe fail for patterns
+* add safe fail for patterns (what if position does not exist)

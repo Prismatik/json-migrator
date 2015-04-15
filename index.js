@@ -68,7 +68,7 @@ var applyRegex = function(pattern, fieldContents) {
   var regex = new RegExp(pattern.regex, "g");
   var match = fieldContents.match(regex);
   //return the piece of the regex as specified (defaults to 0)
-  var position = parseInt(pattern.position) || 0;
+  var position = pattern.position || 0;
   return match[position];
 }
 
