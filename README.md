@@ -12,8 +12,8 @@ The migrator takes in two inputs
 The migration is an object with the following properties
 
 * target - which field on the document should updated by the migration
-* value - what should the 'target' field be updated with
-* delete - delete this field from the document (occurs after the target is updated)
+* value - what should the 'target' field be updated with (can include references to other fields in the same document)
+* delete - delete this field (or fields) from the document (occurs AFTER the target field has been updated)
 
 ###Example
 
