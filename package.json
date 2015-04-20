@@ -1,7 +1,7 @@
 {
-  "name": "migrator",
+  "name": "json-migrator",
   "version": "1.0.0",
-  "description": "",
+  "description": "define a json document to perform your database migrations",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha -R spec"
